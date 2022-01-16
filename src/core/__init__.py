@@ -1,1 +1,1 @@
-from src.core.app import bot
+from src.core.app import ai_assistant
