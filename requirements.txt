@@ -1,4 +1,7 @@
-aiogram==2.18
-environs==9.4.0
+
+
 deeppavlov==0.14.0
 tensorflow==1.15.2
+
+aiogram<3.0
+environs~=8.0.0

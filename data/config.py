@@ -1,6 +1,8 @@
 from environs import Env, EnvValidationError
 import os
 
+from src.core import ai_assistant
+
 env = Env()
 env.read_env()
 
@@ -32,3 +34,5 @@ def get_db_url():
 BOT_TOKEN = get_bot_token()
 ADMINS = get_admins()
 DATABASE_URL = get_db_url()
+assistant_bot = ai_assistant
+

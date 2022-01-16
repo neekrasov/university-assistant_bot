@@ -103,7 +103,7 @@ celerybeat.pid
 
 # Environments
 .venv
-.env
+*/.env
 env/
 venv/
 ENV/
@@ -128,5 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea/*
-mos_polytech_bot_assistant/.env
+.env
 src/core/data/dataset.csv

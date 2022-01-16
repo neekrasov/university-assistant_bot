@@ -33,15 +33,16 @@ class ChatBot(Bot):
             save_load_path: str = "src/core/model",
             train: bool = False
     ):
-        stop_words = stopwords.words('russian')
-        stop_words.extend(
-            ['что', 'это', 'так', 'вот', 'быть', 'как', 'в', '—', '–', 'к', 'на', '...'])
+
 
         model_config = read_json(config_path)
         if data_path:
             model_config["dataset_reader"]["data_path"] = data_path
             model_config["dataset_reader"]["data_url"] = None
         if train:
+            stop_words = stopwords.words('russian')
+            stop_words.extend(
+                ['что', 'это', 'так', 'вот', 'быть', 'как', 'в', '—', '–', 'к', 'на', '...'])
             model_config["chainer"]["pipe"][4]["warm_start"] = True
             model_config["chainer"]["pipe"][0]["stopwords"] = stop_words
             train_model(model_config)
