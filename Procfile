@@ -1,1 +1,1 @@
-bot: python mos_polytech_bot_assistant/app.py
+bot: python app.py
