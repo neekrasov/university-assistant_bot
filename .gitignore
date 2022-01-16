@@ -5,6 +5,8 @@ __pycache__/
 
 # C extensions
 *.so
+#dataset
+src/core/data
 
 # Distribution / packaging
 .Python
@@ -129,4 +131,6 @@ dmypy.json
 .pyre/
 .idea/*
 .env
-src/core/data/dataset.csv
+src/core/data/dataset.csv!/src/core/data/dataset_vsu_qa.csv
+!/src/core/data/dataset_vsu_qa.csv
+!/src/core/data/dataset_vsu_qa.csv
