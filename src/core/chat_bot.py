@@ -66,8 +66,8 @@ class ChatBot(Bot):
                                    skills_selector=HighestConfidenceSelector())
 
     def ask(self, question: str):
-        answers = self._agent([question], [0])
-        self._dialog.append((question, answers[0]))
+        answers = self._agent([question], [0])[0].capitalize()
+        self._dialog.append((question, answers))
         return answers
 
     def get_dialog(self) -> list:
