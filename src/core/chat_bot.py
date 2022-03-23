@@ -28,12 +28,11 @@ class FallbackMessage:
 
 class ChatBot(Bot):
     def __init__(
-            self, config_path: str = "src/core/configs/faq/tfidf_logreg_autofaq.json",
+            self, config_path: str = "core/configs/faq/tfidf_logreg_autofaq.json",
             data_path: str = None,
-            save_load_path: str = "src/core/model",
+            save_load_path: str = "core/model",
             train: bool = False
     ):
-
 
         model_config = read_json(config_path)
         if data_path:

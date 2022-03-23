@@ -1,6 +1,4 @@
-from aiogram import Dispatcher
-
-from loader import dp
+from tg_bot.loader import dp
 from .throttling import ThrottlingMiddleware
 
 

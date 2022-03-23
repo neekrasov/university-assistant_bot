@@ -6,5 +6,4 @@ from loader import dp
 
 @dp.message_handler(CommandStart())
 async def bot_start(message: types.Message):
-    print('1')
     await message.answer(f"Привет, {message.from_user.full_name}!")
