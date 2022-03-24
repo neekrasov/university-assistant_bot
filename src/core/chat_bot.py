@@ -8,6 +8,8 @@ from deeppavlov.deprecated.skills.similarity_matching_skill import SimilarityMat
 from nltk.corpus import stopwords
 from deeppavlov.core.common.file import read_json
 
+from .configs.settings import PERCENTAGE_CONFIDENCE_FOR_ANSWER
+
 
 class Bot(abc.ABC):
 
@@ -16,14 +18,16 @@ class Bot(abc.ABC):
         pass
 
 
-class FallbackMessage:
-    def __init__(self, threshold: float, message="Пожалуйста, перефразируйте вопрос."):
-        if threshold > 1.0:
-            threshold = 1
-        if threshold < 0.0:
-            threshold = 0
-        self.threshold = threshold
-        self.message = message
+class CastomHighestConfidenceSelector(HighestConfidenceSelector):
+
+    def __call__(self, utterances: list, batch_history: list, *responses: list) -> tuple:
+        responses, confidences = zip(*[zip(*r) for r in responses])
+        indexes = [c.index(max(c)) for c in zip(*confidences)]
+        if confidences[indexes[0]][0] <= PERCENTAGE_CONFIDENCE_FOR_ANSWER:
+            with open('questions.txt', 'a') as f:
+                f.write(utterances[0] + '\n')
+        result = [responses[i] for i, *responses in zip(indexes, *responses)]
+        return result[0], confidences[indexes[0]]
 
 
 class ChatBot(Bot):
@@ -34,7 +38,6 @@ class ChatBot(Bot):
             train: bool = False
     ):
 
-
         model_config = read_json(config_path)
         if data_path:
             model_config["dataset_reader"]["data_path"] = data_path
@@ -42,7 +45,7 @@ class ChatBot(Bot):
         if train:
             stop_words = stopwords.words('russian')
             stop_words.extend(
-                ['что', 'это', 'так', 'вот', 'быть', 'как', 'в', '—', '–', 'к', 'на', '...'])
+                ['что', 'это', 'так', 'вот', 'быть', 'как', 'в', '—', '–', 'к', 'на'])
             model_config["chainer"]["pipe"][4]["warm_start"] = True
             model_config["chainer"]["pipe"][0]["stopwords"] = stop_words
             train_model(model_config)
@@ -59,17 +62,20 @@ class ChatBot(Bot):
                                      patterns=['Привет', 'Здравствуйте'])
         bye = PatternMatchingSkill(responses=['Пока', 'Всего доброго'],
                                    patterns=['Пока', 'До свидания'])
+        # fallback = PatternMatchingSkill(responses=['Пожалуйста перефразируйте'],
+        #                                 default_confidence=0.8)
         fallback = PatternMatchingSkill(responses=['Пожалуйста перефразируйте'],
-                                        default_confidence=0.3)
+                                        default_confidence=PERCENTAGE_CONFIDENCE_FOR_ANSWER)
 
         self._dialog = []
         self._agent = DefaultAgent([hello, bye, faq, fallback],
-                                   skills_selector=HighestConfidenceSelector())
+                                   skills_processor=CastomHighestConfidenceSelector())
 
     def ask(self, question: str):
-        answers = self._agent([question], [0])[0].capitalize()
+        answers, confidence = self._agent([question], [0])
+        answers = answers.capitalize()
         self._dialog.append((question, answers))
-        return answers
+        return answers, confidence
 
     def get_dialog(self) -> list:
         return self._dialog
