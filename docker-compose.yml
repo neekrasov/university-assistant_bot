@@ -28,12 +28,26 @@ services:
 #      - /var/run/docker.sock:/var/run/docker.sock
 #    depends_on:
 #      - web
+  db_api:
+    build:
+      context: database_api
+      dockerfile: Dockerfile
+    container_name: db_API
+    ports:
+      - "8001:8001"
+    networks:
+      - default
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - db
 
-  web:
+  core_api:
     build:
       context: src
       dockerfile: Dockerfile
-    container_name: API
+    container_name: core_API
     ports:
       - "8000:8000"
     networks:
@@ -42,6 +56,7 @@ services:
       - .env
     restart: always
     depends_on:
-      - db
+      - db_API
+
 volumes:
   postgres_data:

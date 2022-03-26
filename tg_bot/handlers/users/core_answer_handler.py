@@ -8,7 +8,6 @@ from utils.db_api import post_ai_request
 async def bot_echo(message: types.Message):
     data = {
         "question": message.text,
-        "answer": "/",
     }
     answer = (await post_ai_request(data=data))['answer']
     await message.answer(answer)

@@ -1,5 +1,5 @@
-from .start import dp
-from .help import dp
-from .echo import dp
+from .base_handler import dp
+from .retraining_core_handler import dp
+from .core_answer_handler import dp
 
 __all__ = ["dp"]
