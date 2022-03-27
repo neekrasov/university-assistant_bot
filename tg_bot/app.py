@@ -1,5 +1,6 @@
 from aiogram import executor
 
+
 from utils.notify_admins import on_startup_notify
 from handlers import dp
 from utils.set_bot_commands import set_default_commands
