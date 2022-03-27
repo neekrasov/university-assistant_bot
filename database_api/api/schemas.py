@@ -10,8 +10,9 @@ class Question(BaseModel):
         orm_mode = True
 
 
-class OnlyQuestionIn(BaseModel):
+class QuestionIn(BaseModel):
     question: str = None
+    answer: str = None
 
     class Config:
         orm_mode = True
