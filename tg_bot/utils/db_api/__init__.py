@@ -1,8 +1,10 @@
 import aiohttp
 
-HOST = 'web'
+HOST = 'core_api'
 ai_question_url = "ai-question/"
 retraining_url = "retraining/"
+core_api_port = "8000"
+database_api_port = "8001"
 
 
 def create_url(url: str, host: str, any_id=None):

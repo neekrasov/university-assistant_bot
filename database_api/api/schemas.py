@@ -12,7 +12,6 @@ class Question(BaseModel):
 
 class QuestionIn(BaseModel):
     question: str = None
-    answer: str = None
 
     class Config:
         orm_mode = True
