@@ -11,7 +11,7 @@ async def get_question(id: int):
     return {i: g for i, g in (await db.fetch_one(query)).items()}
 
 
-@app.put(path="/question/", response_model=Question)
+@app.put(path="/question/", response_model=QuestionOut)
 async def update_question(qn: QuestionOut):
     query = questions.update().where(questions.c.id == qn.id).values(answer=qn.answer)
     await db.execute(query)
