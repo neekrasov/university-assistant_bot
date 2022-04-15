@@ -1,6 +1,6 @@
 import uvicorn
 
-from api.schemas import OnlyQuestionIn, Question
+from api.schemas import QuestionIn, Question
 from core import ai_assistant
 from .app import app
 
@@ -8,7 +8,7 @@ from loguru import logger
 
 
 @app.post(path="/ai-question/", response_model=Question)
-async def answer_ai(qn: OnlyQuestionIn):
+async def answer_ai(qn: QuestionIn):
     logger.debug(qn.question)
     answer = ai_assistant.ask(qn.question)
     return {**qn.dict(), "answer": answer}
