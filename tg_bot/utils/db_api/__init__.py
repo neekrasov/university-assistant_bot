@@ -3,6 +3,7 @@ import aiohttp
 HOST = 'core_api'
 ai_question_url = "ai-question/"
 retraining_url = "retraining/"
+questions_urls = "retraining/"
 core_api_port = "8000"
 database_api_port = "8001"
 
@@ -32,4 +33,8 @@ async def post_ai_request(data: dict):
 
 
 async def retraining_get_request():
+    return await simple_get_request(url=retraining_url)
+
+
+async def get_questions_request():
     return await simple_get_request(url=retraining_url)
