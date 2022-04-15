@@ -19,7 +19,7 @@ async def get_all_questions():
 
 
 @app.post(path="/question/", response_model=Question)
-async def create_questions(qn: QuestionIn):
+async def create_question(qn: QuestionIn):
     query = questions.insert().values(question=qn.question)
     last_record_id = await db.execute(query)
     return {**qn.dict(), "id": last_record_id}

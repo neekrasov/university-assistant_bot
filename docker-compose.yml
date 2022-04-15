@@ -3,15 +3,21 @@ version: '3.8'
 services:
   db:
     image: postgres:14-alpine
-    container_name: postgres
-    expose:
-      - 5432
+    container_name: bot_assistant_postgres
     networks:
       - default
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - .env
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
 
   assistant_bot:
     build:
@@ -35,7 +41,7 @@ services:
       dockerfile: Dockerfile
     container_name: db_API
     ports:
-      - "8001:8001"
+      - 8001:8001
     networks:
       - default
     env_file:
@@ -50,7 +56,7 @@ services:
       dockerfile: Dockerfile
     container_name: core_API
     ports:
-      - "8000:8000"
+      - 8002:8002
     networks:
       - default
     env_file:
@@ -61,3 +67,4 @@ services:
 
 volumes:
   postgres_data:
+  model:

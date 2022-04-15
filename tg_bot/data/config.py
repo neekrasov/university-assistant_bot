@@ -7,9 +7,9 @@ env.read_env()
 
 def get_bot_token():
     try:
-        bot_token = env.str("BOT_TOKEN")
+        bot_token = env.str("TG_BOT_TOKEN")
     except EnvValidationError:
-        bot_token = os.environ['BOT_TOKEN']
+        bot_token = os.environ['TG_BOT_TOKEN']
     return bot_token
 
 
