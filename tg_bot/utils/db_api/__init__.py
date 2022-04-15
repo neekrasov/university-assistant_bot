@@ -1,14 +1,15 @@
 import aiohttp
 
-HOST = 'web'
+HOST = 'core_api'
 ai_question_url = "ai-question/"
 retraining_url = "retraining/"
+question_url = "question/"
 
 
 def create_url(url: str, host: str, any_id=None):
     if any_id is None:
         any_id = list()
-    return f'http://{host}:8000/{url.format(*any_id)}'
+    return f'http://{host}:8002/{url.format(*any_id)}'
 
 
 async def simple_post_request(url: str, any_id: list = None, data: dict = None):
@@ -31,3 +32,7 @@ async def post_ai_request(data: dict):
 
 async def retraining_get_request():
     return await simple_get_request(url=retraining_url)
+
+
+async def save_question():
+    return await simple_get_request(url=question_url)

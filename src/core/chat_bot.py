@@ -1,4 +1,7 @@
 import abc
+
+import aiohttp
+import requests
 from deeppavlov import train_model
 from deeppavlov.deprecated.agents.default_agent import DefaultAgent
 from deeppavlov.deprecated.agents.processors import HighestConfidenceSelector
@@ -9,6 +12,32 @@ from nltk.corpus import stopwords
 from deeppavlov.core.common.file import read_json
 
 from .configs.settings import PERCENTAGE_CONFIDENCE_FOR_ANSWER
+
+from loguru import logger
+
+question_url = "question/"
+HOST = 'db_api'
+
+
+def create_url(url: str, any_id=None):
+    if any_id is None:
+        any_id = list()
+    return f'http://{HOST}:8001/{url.format(*any_id)}'
+
+
+def simple_post_request(url: str, any_id: list = None, data: dict = None) -> dict():
+    if any_id is None:
+        any_id = list()
+    if data is None:
+        data = dict()
+
+    return requests.post(url=create_url(url=url, any_id=any_id), json=data).json()
+
+
+def save_question(question):
+    logger.debug({'question': question})
+    return simple_post_request(url=question_url,
+                               data={'question': question})
 
 
 class Bot(abc.ABC):
@@ -24,9 +53,10 @@ class CastomHighestConfidenceSelector(HighestConfidenceSelector):
         responses, confidences = zip(*[zip(*r) for r in responses])
         indexes = [c.index(max(c)) for c in zip(*confidences)]
         if confidences[indexes[0]][0] <= PERCENTAGE_CONFIDENCE_FOR_ANSWER:
-            with open('questions.txt', 'a') as f:
-                f.write(utterances[0] + '\n')
+            logger.debug(utterances[0])
+            logger.debug(save_question(utterances[0]))
         result = [responses[i] for i, *responses in zip(indexes, *responses)]
+        logger.debug(result[0])
         return result[0], confidences[indexes[0]]
 
 
@@ -73,9 +103,10 @@ class ChatBot(Bot):
 
     def ask(self, question: str):
         answers, confidence = self._agent([question], [0])
-        answers = answers.capitalize()
-        self._dialog.append((question, answers))
-        return answers, confidence
+        answer = answers.capitalize()
+        self._dialog.append((question, answer))
+
+        return answer
 
     def get_dialog(self) -> list:
         return self._dialog

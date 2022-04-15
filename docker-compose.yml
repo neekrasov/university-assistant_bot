@@ -3,9 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:14-alpine
-    container_name: postgres
-    expose:
-      - 5432
+    container_name: bot_assistant_postgres
     networks:
       - default
     volumes:
@@ -13,28 +11,37 @@ services:
     env_file:
       - .env
 
-#  assistant_bot:
-#    build:
-#      context: tg_bot
-#      dockerfile: Dockerfile
-#    container_name: assistant_bot
-#    tty: true
-#    networks:
-#      - default
-#    env_file:
-#      - .env
-#    restart: always
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-#    depends_on:
-#      - web
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+  assistant_bot:
+    build:
+      context: tg_bot
+      dockerfile: Dockerfile
+    container_name: assistant_bot
+    tty: true
+    networks:
+      - default
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - core_api
+
   db_api:
     build:
       context: database_api
       dockerfile: Dockerfile
     container_name: db_API
     ports:
-      - "8001:8001"
+      - 8001:8001
     networks:
       - default
     env_file:
@@ -49,14 +56,15 @@ services:
       dockerfile: Dockerfile
     container_name: core_API
     ports:
-      - "8000:8000"
+      - 8002:8002
     networks:
       - default
     env_file:
       - .env
     restart: always
     depends_on:
-      - db_API
+      - db_api
 
 volumes:
   postgres_data:
+  model:
