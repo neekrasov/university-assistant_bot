@@ -15,3 +15,12 @@ class QuestionIn(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class QuestionOut(BaseModel):
+    id: int = None
+    answer: str = None
+
+    class Config:
+        orm_mode = True
+
