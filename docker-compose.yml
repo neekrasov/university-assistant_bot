@@ -13,6 +13,7 @@ services:
 
   adminer:
     image: adminer
+    container_name: bot_assistant_adminer
     restart: always
     ports:
       - "8080:8080"

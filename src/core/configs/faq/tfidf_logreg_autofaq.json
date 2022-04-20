@@ -94,7 +94,7 @@
   },
   "metadata": {
     "variables": {
-      "ROOT_PATH": "src/core",
+      "ROOT_PATH": "core",
       "MODELS_PATH": "{ROOT_PATH}/model"
     }
   }

@@ -9,6 +9,7 @@ from deeppavlov.deprecated.agents.processors import HighestConfidenceSelector
 from deeppavlov.deprecated.skills.pattern_matching_skill import PatternMatchingSkill
 from deeppavlov.deprecated.skills.similarity_matching_skill import SimilarityMatchingSkill
 from nltk.corpus import stopwords
+import nltk
 from deeppavlov.core.common.file import read_json
 
 from .configs.settings import PERCENTAGE_CONFIDENCE_FOR_ANSWER
@@ -18,6 +19,7 @@ from loguru import logger
 question_url = "question/"
 HOST = 'db_api'
 
+nltk.download('stopwords')
 
 def create_url(url: str, any_id=None):
     if any_id is None:
@@ -105,7 +107,6 @@ class ChatBot(Bot):
         answers, confidence = self._agent([question], [0])
         answer = answers.capitalize()
         self._dialog.append((question, answer))
-
         return answer
 
     def get_dialog(self) -> list:
