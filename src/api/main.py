@@ -11,6 +11,7 @@ from loguru import logger
 async def answer_ai(qn: QuestionIn):
     logger.debug(qn.question)
     answer = ai_assistant.ask(qn.question)
+    logger.debug(answer)
     return {**qn.dict(), "answer": answer}
 
 
