@@ -71,6 +71,7 @@ class ChatBot(Bot):
     ):
 
         model_config = read_json(config_path)
+        logger.debug(train)
         if data_path:
             model_config["dataset_reader"]["data_path"] = data_path
             model_config["dataset_reader"]["data_url"] = None
@@ -96,7 +97,7 @@ class ChatBot(Bot):
                                    patterns=['Пока', 'До свидания'])
         # fallback = PatternMatchingSkill(responses=['Пожалуйста перефразируйте'],
         #                                 default_confidence=0.8)
-        fallback = PatternMatchingSkill(responses=['Пожалуйста перефразируйте'],
+        fallback = PatternMatchingSkill(responses=["/"],
                                         default_confidence=PERCENTAGE_CONFIDENCE_FOR_ANSWER)
 
         self._dialog = []

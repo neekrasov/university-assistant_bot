@@ -1,6 +1,5 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
-from loguru import logger
 
 show_question = CallbackData('show_question', 'question_id')
 pagination_call = CallbackData("paginator", "key", "page")

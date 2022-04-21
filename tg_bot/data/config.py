@@ -21,5 +21,15 @@ def get_admins():
     return [int(admin_id) for admin_id in admins]
 
 
+def get_manager_id():
+    try:
+        manager = env.list("MANAGER")
+    except EnvValidationError:
+        manager = os.environ['MANAGER']
+    return manager
+
+
 BOT_TOKEN = get_bot_token()
 ADMINS = get_admins()
+MANAGER = get_manager_id()
+

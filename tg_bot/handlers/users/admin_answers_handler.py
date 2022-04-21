@@ -5,7 +5,7 @@ from aiogram.types import CallbackQuery
 
 from data.config import ADMINS
 from filters.private import IsPrivate
-from keyboards.inline.pagination import get_pages_keyboard, pagination_call, show_question
+from keyboards.inline.admin_answers_keyboard import get_pages_keyboard, pagination_call, show_question
 from loader import dp
 from utils.db_api import get_all_questions_request, put_question_request, get_question_request
 from loguru import logger
